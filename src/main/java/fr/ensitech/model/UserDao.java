@@ -7,7 +7,7 @@ import org.hibernate.Transaction;
 import javax.persistence.RollbackException;
 import java.util.List;
 
-public class UserDao implements  IUserDao {
+public class UserDao implements IUserDao {
 
     @Override
     public User createUser(User user) throws Exception {

@@ -4,12 +4,19 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Entity
+@Table(name = "utilisateur")
+@NamedQueries({
+        @NamedQuery(name = "user::findAll", query = "FROM User u"),
+        @NamedQuery(name = "User::ByNomAndPrenom", query = "FROM User u WHERE u.nom = ?1 AND u.prenom = ?2" )
+})
 public class User {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "nom", nullable = false, length = 45)
@@ -34,7 +41,7 @@ public class User {
 
     @Column(name = "date_naissance", nullable = true)
     @Temporal(TemporalType.DATE)
-    private Date datenaissance;
+    private Date dateNaissance;
 
     @Column(name = "actif", nullable = false)
     private Boolean actif;
@@ -42,7 +49,9 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Adresse> adresses;
 
-    public User() {}
+    public User() {
+        this.adresses = new ArrayList();
+    }
 
     public Long getId() {
         return id;
@@ -84,12 +93,12 @@ public class User {
         this.password = password;
     }
 
-    public Date getDatenaissance() {
-        return datenaissance;
+    public Date getDateNaissance() {
+        return dateNaissance;
     }
 
-    public void setDatenaissance(Date datenaissance) {
-        this.datenaissance = datenaissance;
+    public void setDateNaissance(Date dateNaissance) {
+        this.dateNaissance = dateNaissance;
     }
 
     public Boolean getActif() {
@@ -112,7 +121,7 @@ public class User {
                 ", prenom='" + prenom + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", datenaissance=" + datenaissance +
+                ", datenaissance=" + dateNaissance +
                 ", actif=" + actif +
                 '}';
     }
